@@ -23,6 +23,22 @@ app.post("/webhook", async (req, res) => {
 
     const chatId = message.chat.id;
     const userText = message.text;
+    const chatId = message.chat.id;
+const userText = message.text;
+
+console.log("User message:", userText);
+
+if (userText.startsWith("/start")) {
+
+  if (userText.includes("website")) {
+    console.log("User came from website");
+  }
+
+  if (userText.includes("instagram")) {
+    console.log("User came from Instagram");
+  }
+
+}
 
     const mistralResponse = await axios.post(
       "https://api.mistral.ai/v1/chat/completions",
