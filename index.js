@@ -60,10 +60,7 @@ Keep answers:
 
 Never give guaranteed returns.
 Never give direct investment advice.
-Never promote risky financial behavior.
-
-Mention SturdyFin naturally when users ask about deeper learning, comparisons, planning, or finance education resources.
-`
+Never promote risky financial behavior.`
 },
           {
             role: "user",
