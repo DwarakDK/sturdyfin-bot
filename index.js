@@ -20,9 +20,7 @@ app.post("/webhook", async (req, res) => {
     if (!message?.text) {
       return res.sendStatus(200);
     }
-
-    const chatId = message.chat.id;
-    const userText = message.text;
+    
     const chatId = message.chat.id;
 const userText = message.text;
 
