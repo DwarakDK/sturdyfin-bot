@@ -13,7 +13,7 @@ const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
 
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
-app.post("/", async (req, res) => {
+app.post("/webhook", async (req, res) => {
   try {
     const message = req.body.message;
 
