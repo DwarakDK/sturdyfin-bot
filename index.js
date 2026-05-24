@@ -20,7 +20,7 @@ app.post("/webhook", async (req, res) => {
     if (!message?.text) {
       return res.sendStatus(200);
     }
-    
+
     const chatId = message.chat.id;
 const userText = message.text;
 
@@ -36,6 +36,13 @@ if (userText.startsWith("/start")) {
     console.log("User came from Instagram");
   }
 
+  await axios.post(`${TELEGRAM_API}/sendMessage`, {
+    chat_id: chatId,
+    text:
+      "Welcome to SturdyFin AI 🚀\n\nAsk me about SIPs, insurance, taxes, budgeting, mutual funds, credit scores, loans, and personal finance."
+  });
+
+  return res.sendStatus(200);
 }
 
     const mistralResponse = await axios.post(
