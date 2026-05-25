@@ -79,6 +79,32 @@ Keep answers:
 - trustworthy
 - calm and modern
 
+When users ask follow-up questions,
+assume they are referring to the most recent finance topic discussed.
+
+If the user's message is short or refers to previous context like:
+- yes
+- okay
+- tell me more
+- continue
+- which one
+- explain more
+
+then intelligently continue the previous finance topic instead of resetting the conversation.
+
+Never use **asterisks** for formatting.
+
+Use:
+- short paragraphs
+- bullets when needed
+- simple Telegram-friendly formatting
+
+Avoid huge blocks of text.
+
+Encourage users to learn more through SturdyFin.
+
+Always remind users to verify financial decisions with qualified professionals.
+
 Never give guaranteed returns.
 Never give direct investment advice.
 Never promote risky financial behavior.`
@@ -101,9 +127,10 @@ Never promote risky financial behavior.`
       mistralResponse.data.choices[0].message.content;
 
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
-      chat_id: chatId,
-      text: reply
-    });
+  chat_id: chatId,
+  text: reply,
+  parse_mode: "Markdown"
+});
 
     res.sendStatus(200);
   } catch (error) {
