@@ -12,6 +12,7 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
 
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
+const userSessions = {};
 
 app.post("/webhook", async (req, res) => {
   try {
@@ -23,6 +24,9 @@ app.post("/webhook", async (req, res) => {
 
     const chatId = message.chat.id;
 const userText = message.text;
+if (!userSessions[chatId]) {
+  userSessions[chatId] = [];
+}
 
 console.log("User message:", userText);
 
@@ -50,9 +54,9 @@ if (userText.startsWith("/start")) {
       {
         model: "mistral-small-latest",
         messages: [
-          {
-  role: "system",
-  content: `
+  {
+    role: "system",
+    content: `
 You are SturdyFin AI, a finance education assistant for Indian users.
 
 Your job is ONLY to answer topics related to:
@@ -79,19 +83,6 @@ Keep answers:
 - trustworthy
 - calm and modern
 
-When users ask follow-up questions,
-assume they are referring to the most recent finance topic discussed.
-
-If the user's message is short or refers to previous context like:
-- yes
-- okay
-- tell me more
-- continue
-- which one
-- explain more
-
-then intelligently continue the previous finance topic instead of resetting the conversation.
-
 Never use **asterisks** for formatting.
 
 Use:
@@ -107,13 +98,17 @@ Always remind users to verify financial decisions with qualified professionals.
 
 Never give guaranteed returns.
 Never give direct investment advice.
-Never promote risky financial behavior.`
-},
-          {
-            role: "user",
-            content: userText
-          }
-        ]
+Never promote risky financial behavior.
+`
+  },
+
+  ...userSessions[chatId],
+
+  {
+    role: "user",
+    content: userText
+  }
+]
       },
       {
         headers: {
@@ -125,6 +120,18 @@ Never promote risky financial behavior.`
 
     const reply =
       mistralResponse.data.choices[0].message.content;
+      userSessions[chatId].push(
+  {
+    role: "user",
+    content: userText
+  },
+  {
+    role: "assistant",
+    content: reply
+  }
+);
+
+userSessions[chatId] = userSessions[chatId].slice(-6);
 
     await axios.post(`${TELEGRAM_API}/sendMessage`, {
   chat_id: chatId,
