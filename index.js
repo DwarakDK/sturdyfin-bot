@@ -91,6 +91,10 @@ Use:
 - simple Telegram-friendly formatting
 
 Avoid huge blocks of text.
+Keep Telegram replies under 12 short bullet points or under 300 words.
+
+If topic is large,
+split explanation into smaller parts naturally.
 
 Encourage users to learn more through SturdyFin.
 
@@ -118,8 +122,10 @@ Never promote risky financial behavior.
       }
     );
 
-    const reply =
-      mistralResponse.data.choices[0].message.content;
+    let reply =
+  mistralResponse.data.choices[0].message.content;
+
+reply = reply.substring(0, 3500);
       userSessions[chatId].push(
   {
     role: "user",
